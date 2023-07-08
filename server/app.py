@@ -11,21 +11,6 @@ migrate = Migrate(app, db)
 db.init_app(app)
 
 
-# @app.route('/users', methods=['GET'])
-# def get_all_users():
-#     users = User.query.all()
-#     user_list = []
-#     for user in users:
-#         user_data = {
-#             'id': user.id,
-#             'name': user.name,
-#             'age': user.age,
-#             'password': user.password,
-#             'email': user.email
-#         }
-#         user_list.append(user_data)
-#     return jsonify(user_list)
-
 @app.route('/animals', methods=['GET'])
 def get_all_animals():
     animals = Animal.query.all()
@@ -70,9 +55,9 @@ def create_animal():
 
     return jsonify({'message': 'Animal created successfully'}), 201
 
-@app.route('/animals/<int:animal_id>', methods=['PUT'])
-def update_animal(animal_id):
-    animal = Animal.query.get(animal_id)
+@app.route('/animals/<int:animal_id>', methods=['PATCH'])
+def update_animal(animal_Id):
+    animal = Animal.query.get(animal_Id)
     if animal:
         data = request.get_json()
         animal.name = data.get('name', animal.name)
@@ -127,7 +112,7 @@ def get_all_adoptions():
     adoption_list = []
     for adoption in adoptions:
         adoption_data = {
-             'id': adoption.id,
+             
             'adopter_id': adoption.adopter_id,
             'animal_id': adoption.animal_id
         }
@@ -160,4 +145,4 @@ def create_adoption():
     return jsonify({'message': 'Adoption created successfully'}), 201
 
 if __name__ == '__main__':
-    app.run(port=5555)
+    app.run(port=5000)

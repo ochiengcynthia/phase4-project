@@ -1,13 +1,30 @@
 from flask import Flask, jsonify, request
-from models import db, Animal, Center, Adoption
+from models import db, Animal, Center, Adoption,User
 from flask_migrate import Migrate
-
+from flask_cors import CORS
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 migrate = Migrate(app, db)
 db.init_app(app)
+
+
+# @app.route('/users', methods=['GET'])
+# def get_all_users():
+#     users = User.query.all()
+#     user_list = []
+#     for user in users:
+#         user_data = {
+#             'id': user.id,
+#             'name': user.name,
+#             'age': user.age,
+#             'password': user.password,
+#             'email': user.email
+#         }
+#         user_list.append(user_data)
+#     return jsonify(user_list)
 
 @app.route('/animals', methods=['GET'])
 def get_all_animals():

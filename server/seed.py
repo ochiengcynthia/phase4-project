@@ -1,7 +1,7 @@
 from faker import Faker
 from models import db, User, Center, Animal, Adoption
 from random import randint, choice
-from main import app
+from server.app import app
 import random
 import json
 

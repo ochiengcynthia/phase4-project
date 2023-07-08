@@ -1,14 +1,18 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session
 from models import db, Animal, Center, Adoption,User
 from flask_migrate import Migrate
 from flask_cors import CORS
 app = Flask(__name__)
+
+from flask_bcrypt import Bcrypt
+
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+app.secret_key="secret"
 migrate = Migrate(app, db)
 db.init_app(app)
+bcrypt = Bcrypt(app)
 
 
 @app.route('/animals', methods=['GET'])
@@ -143,6 +147,44 @@ def create_adoption():
     db.session.commit()
 
     return jsonify({'message': 'Adoption created successfully'}), 201
+
+@app.route('/login', methods=['POST'])
+def login():
+    email = request.json['email']
+    password = request.json['password']
+    user = User.query.filter_by(email=email).first()
+    if user:
+        if bcrypt.check_password_hash(user.password, password):
+            # db.session['id'] = user.id
+            return jsonify({'message': 'Login Successful'})
+        else:
+            return jsonify({'message': 'Invalid Credentials'})
+    else:
+        return jsonify({'message': 'User not found'})
+    
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    data = request.get_json()
+    password = data['password']
+    hashed_password = bcrypt.generate_password_hash(password)
+    
+    new_user = User(
+        name = data["name"],
+        age = data["age"],
+        email = data["email"],
+        id = data["id"],
+        password = hashed_password
+    )
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify({'message': 'Registration Successful'})
+
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.pop('email', None)
+    return {"msg": "User logged out"}
 
 if __name__ == '__main__':
     app.run(port=5000)

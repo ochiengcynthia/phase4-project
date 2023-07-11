@@ -155,7 +155,6 @@ def login():
     user = User.query.filter_by(email=email).first()
     if user:
         if bcrypt.check_password_hash(user.password, password):
-            # db.session['id'] = user.id
             return jsonify({'message': 'Login Successful'})
         else:
             return jsonify({'message': 'Invalid Credentials'})

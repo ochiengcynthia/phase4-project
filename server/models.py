@@ -1,6 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 
 db = SQLAlchemy()
+ma = Marshmallow()
 
 class User(db.Model):
     __tablename__ = "user"
@@ -45,3 +47,24 @@ class Adoption(db.Model):
 
     def __repr__(self):
         return f'{self.adopter.name} adopted {self.animal.name}'
+
+class UserSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+
+class CenterSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Center
+
+class AnimalSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Animal
+
+class AdoptionSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Adoption
+
+user_schema = UserSchema()
+center_schema = CenterSchema()
+animal_schema = AnimalSchema()
+adoption_schema = AdoptionSchema()

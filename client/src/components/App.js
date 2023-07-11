@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {Route, Routes } from 'react-router-dom';
 import Home from './Home';
 import About from './About';
 import Adoptions from './Adoptions';
@@ -9,8 +9,9 @@ import Navbar from './Navbar';
 
 function App() {
   return (
-    <Router>
+    <div>
       <Navbar />
+    
       <Routes>
         <Route path="/About" element={<About />} />
         <Route path="/Centers" element={<Centers />} />
@@ -18,7 +19,7 @@ function App() {
         <Route path="/Adoptions" element={<Adoptions />} />
         <Route path="/" element={<Home />} />
       </Routes>
-    </Router>
+      </div>
   );
 }
 

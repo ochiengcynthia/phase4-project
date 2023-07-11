@@ -4,7 +4,7 @@ function Adoptions() {
   const [adoptions, setAdoptions] = useState([]);
 
   useEffect(() => {
-    fetch(' http://127.0.0.1:5555/adoptions')
+    fetch(' http://127.0.0.1:5000/adoptions')
       .then(response => response.json())
       .then(data => setAdoptions(data))
       .catch(error => console.log(error));
